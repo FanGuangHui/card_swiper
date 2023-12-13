@@ -72,6 +72,7 @@ class Swiper extends StatefulWidget {
     this.scale,
     this.fade,
     this.allowImplicitScrolling = false,
+    this.padEnds = true,
   })  : assert(
           itemBuilder != null || transformer != null,
           'itemBuilder and transformItemBuilder must not be both null',
@@ -246,6 +247,17 @@ class Swiper extends StatefulWidget {
   final PageIndicatorLayout indicatorLayout;
 
   final bool allowImplicitScrolling;
+
+  /// Whether to add padding to both ends of the list.
+  ///
+  /// If this is set to true and [PageController.viewportFraction] < 1.0, padding will be added
+  /// such that the first and last child slivers will be in the center of
+  /// the viewport when scrolled all the way to the start or end, respectively.
+  ///
+  /// If [PageController.viewportFraction] >= 1.0, this property has no effect.
+  ///
+  /// This property defaults to true and must not be null.
+  final bool padEnds;
 
   static Swiper list<T>({
     PageTransformer? transformer,
@@ -526,6 +538,7 @@ class _SwiperState extends _SwiperTimerMixin {
         physics: widget.physics,
         controller: _controller,
         allowImplicitScrolling: widget.allowImplicitScrolling,
+        padEnds: widget.padEnds,
       );
       if (widget.autoplayDisableOnInteraction && widget.autoplay) {
         return NotificationListener(

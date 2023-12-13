@@ -225,6 +225,7 @@ class TransformerPageView extends StatefulWidget {
     this.controller,
     this.transformer,
     this.allowImplicitScrolling = false,
+    this.padEnds = true,
     this.itemBuilder,
     this.pageController,
     required this.itemCount,
@@ -319,6 +320,17 @@ class TransformerPageView extends StatefulWidget {
   final int? index;
 
   final bool allowImplicitScrolling;
+
+  /// Whether to add padding to both ends of the list.
+  ///
+  /// If this is set to true and [PageController.viewportFraction] < 1.0, padding will be added
+  /// such that the first and last child slivers will be in the center of
+  /// the viewport when scrolled all the way to the start or end, respectively.
+  ///
+  /// If [PageController.viewportFraction] >= 1.0, this property has no effect.
+  ///
+  /// This property defaults to true and must not be null.
+  final bool padEnds;
 
   @override
   State<StatefulWidget> createState() => _TransformerPageViewState();
@@ -427,6 +439,7 @@ class _TransformerPageViewState extends State<TransformerPageView> {
   Widget build(BuildContext context) {
     final builder = _transformer == null ? _buildItemNormal : _buildItem;
     final child = PageView.builder(
+      padEnds: widget.padEnds,
       allowImplicitScrolling: widget.allowImplicitScrolling,
       itemBuilder: builder,
       itemCount: _pageController.getRealItemCount(),
